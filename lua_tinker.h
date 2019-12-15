@@ -14,6 +14,8 @@
 
 namespace lua_tinker
 {
+	void push_meta(lua_State* L, const char* name);
+
 	// init LuaTinker
 	void	init(lua_State *L);
 
@@ -904,7 +906,7 @@ namespace lua_tinker
 		static const char* name(const char* name = NULL)
 		{
 			static char temp[256] = "";
-			if(name) strcpy_s(temp, name);
+			if(name) strcpy(temp, name);
 			return temp;
 		}
 	};

@@ -1,10 +1,21 @@
--- C++ ¿¡¼­ µî·ÏÇÑ ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+-- C++ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ñ´ï¿½.
 result = cpp_func(1, 2)
 
 print("cpp_func(1,2) = "..result)
 
+local t = g_test:table()
 
--- ÀÏ¹ÝÀûÀÎ lua ÇÔ¼ö¸¦ ¼±¾ðÇÑ´Ù.
+function tablelength(T)
+	local count = 0
+	for _ in pairs(T) do count = count + 1 end
+	return count
+end
+
+print("table size: "..tablelength(t))
+
+for k, v in pairs(t) do print(k, v) end
+
+-- ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ lua ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 function lua_func(arg1, arg2)
 	return arg1 + arg2
 end

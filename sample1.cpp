@@ -1,4 +1,4 @@
-// sample1.cpp : C++ ¿Í Lua »óÈ£°£ÀÇ ÇÔ¼ö ½ÇÇàÀ» ¾Ë¾Æº»´Ù.
+// sample1.cpp : C++ ï¿½ï¿½ Lua ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½.
 //
 
 #include <iostream>
@@ -17,27 +17,45 @@ int cpp_func(int arg1, int arg2)
 	return arg1 + arg2;
 }
 
+class Foo {
+public:
+	int table(lua_State* L) {
+		lua_newtable(L);
+		lua_pushstring(L, "bar");
+		lua_setfield(L, -2, "foo");
+		return 1;
+	}
+};
+
 int main()
 {
-	// Lua ¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
+	// Lua ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Ñ´ï¿½.
 	lua_State* L = lua_open();
 
-	// Lua ±âº» ÇÔ¼öµéÀ» ·ÎµåÇÑ´Ù.- print() »ç¿ë
+	// Lua ï¿½âº» ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½Ñ´ï¿½.- print() ï¿½ï¿½ï¿½
 	luaopen_base(L);
 
-	// LuaTinker ¸¦ ÀÌ¿ëÇØ¼­ ÇÔ¼ö¸¦ µî·ÏÇÑ´Ù.
+	// LuaTinker ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	lua_tinker::def(L, "cpp_func", cpp_func);
 
-	// sample1.lua ÆÄÀÏÀ» ·Îµå/½ÇÇàÇÑ´Ù.
+	lua_tinker::class_add<Foo>(L, "Foo");
+	lua_tinker::class_def<Foo>(L, "table", &Foo::table);
+
+	Foo foo;
+	lua_tinker::set(L, "g_test", &foo);
+
+	// sample1.lua ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	lua_tinker::dofile(L, "sample1.lua");
 
-	// sample1.lua ÀÇ ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+	// sample1.lua ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ñ´ï¿½.
 	int result = lua_tinker::call<int>(L, "lua_func", 3, 4);
 
-	// lua_func(3,4) ÀÇ °á°ú¹° Ãâ·Â
+	// lua_func(3,4) ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	printf("lua_func(3,4) = %d\n", result);
 
-	// ÇÁ·Î±×·¥ Á¾·á
+
+
+	// ï¿½ï¿½ï¿½Î±×·ï¿½ ï¿½ï¿½ï¿½ï¿½
 	lua_close(L);
 
 	return 0;
